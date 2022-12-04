@@ -15,8 +15,20 @@ app.set("view engine","ejs")
 app.use(express.static(path.join(__dirname,"public")))
 
 app.get('/', function(req,res){
-  res.send("Olá Júlia!")
+  res.render('index.ejs', {})
 })
+
+app.get('/usuarios', function(req,res){
+    res.render('usuarios.ejs',{usuarios:[
+        {nome:'Julia', email:'julia@gmail.com'},
+        {nome:'Laura', email:'laura@gmail.com'},
+        {nome:'Clara', email:'clara@gmail.com'},
+        {nome:'Eloisa', email:'eloisa@gmail.com'},
+        {nome:'Yasmin', email:'yasmin@gmail.com'},
+        {nome:'Leticia', email:'leticia@gmail.com'}
+    ]})
+  })
+
 
 app.listen(3000, function(){
     console.log("Conexão inicializada na porta 3000!")
