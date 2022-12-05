@@ -3,6 +3,7 @@ const app = express()
 var bodyParser = require('body-parser')
 var cookieParser = require('cookie-parser')
 var path = require('path')
+var Usuario = require('./model/usuario')
 
 
 app.use(cookieParser())
@@ -14,30 +15,35 @@ app.set("view engine","ejs")
 
 app.use(express.static(path.join(__dirname,"public")))
 
+
+//rotas
 app.get('/', function(req,res){
   res.render('index.ejs', {})
 })
-
-app.get('/usuarios', function(req,res){
-    res.render('usuarios.ejs',{usuarios:[
-        {nome:'Julia', email:'julia@gmail.com'},
-        {nome:'Laura', email:'laura@gmail.com'},
-        {nome:'Clara', email:'clara@gmail.com'},
-        {nome:'Eloisa', email:'eloisa@gmail.com'},
-        {nome:'Yasmin', email:'yasmin@gmail.com'},
-        {nome:'Leticia', email:'leticia@gmail.com'}
-    ]})
-  })
 
   app.get('/add', function(req,res){
     res.render('adiciona.ejs')
   })
 
   app.post('/add', function(req,res) {
-   console.log("chegou aqui!")
+   var usuario = new Usuario({
+      nome: req.body.txtNome,
+      email: req.body.txtEmail,
+      senha: req.body.txtSenha,
+      foto: req.body.txtFoto
+   })
+   usuario.save(function(err){
+     if(err){
+     console.log(err)
+     }
+     else{
+      res.redirect('/');
+     }
+   })
   })
 
 
+//porta
 app.listen(3000, function(){
     console.log("Conexão inicializada na porta 3000!")
 })
